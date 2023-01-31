@@ -1,0 +1,11 @@
+# these environment files are large, they should maunuelly downloaded after cloning the repos -Yu
+*.x86_64
+*.debug
+*.so
+
+# also these folder for the environment is too large -Yu
+catkin_ws/src/simulation/src/City_Scenary_Data/
+catkin_ws/build
+catkin_ws/devel
+catkin_ws/build_isolated
+catkin_ws/devel_isolated

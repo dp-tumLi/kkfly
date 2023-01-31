@@ -1,0 +1,14 @@
+<launch>
+    <arg name="mav_name" default="firefly"/>
+
+        <!--- Trajectory planner -->
+        <node name="planner" pkg="path_planner" type="path_planner" output="screen" clear_params = "true">
+            <rosparam command="load" file="$(find path_planner)/config/trajectory_config.yaml"/>
+        </node>
+
+        <!--- Trajectory sampler -->
+        <node name="sampler" pkg="mav_trajectory_generation_ros" type="trajectory_sampler_node" output="screen">
+            <remap from="path_segments_4D" to="trajectory"/>
+        </node>
+
+</launch>
