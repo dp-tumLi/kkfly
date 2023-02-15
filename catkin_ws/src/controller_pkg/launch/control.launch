@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find controller_pkg)/launch/controller.launch"/>
+  <include file="$(find controller_pkg)/launch/rviz.launch"/>
+</launch>

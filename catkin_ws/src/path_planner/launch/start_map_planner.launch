@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find vision_pkg)/launch/vision.launch"/>
+  <include file="$(find octomap_mapping)/octomap_server/launch/octomap_mapping.launch"/>
+  <include file="$(find path_planner)/launch/waypoint_mission.launch"/>
+</launch>

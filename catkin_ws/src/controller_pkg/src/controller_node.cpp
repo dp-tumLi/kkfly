@@ -8,6 +8,7 @@
 #include <mav_msgs/Actuators.h>
 #include <nav_msgs/Odometry.h>
 #include <trajectory_msgs/MultiDOFJointTrajectoryPoint.h>
+#include <trajectory_msgs/MultiDOFJointTrajectory.h>
 #include <math.h>
 #include <std_msgs/Float64.h>
 
@@ -130,8 +131,8 @@ public:
       //
       // ~~~~ begin solution
       
-      desired_state = nh.subscribe("desired_state", 1, &controllerNode::onDesiredState, this);
-      current_state = nh.subscribe("current_state_est", 1, &controllerNode::onCurrentState, this);
+      desired_state = nh.subscribe("/command/trajectory", 10, &controllerNode::onDesiredState, this);
+      current_state = nh.subscribe("/current_state_est", 1, &controllerNode::onCurrentState, this);
       prop_speeds = nh.advertise<mav_msgs::Actuators>("rotor_speed_cmds", 1);
       timer = nh.createTimer(ros::Rate(hz), &controllerNode::controlLoop, this);
 
@@ -178,7 +179,17 @@ public:
       J << 1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0;
   }
 
-  void onDesiredState(const trajectory_msgs::MultiDOFJointTrajectoryPoint& des_state){
+  // trajectory_msgs::MultiDOFJointTrajectoryPoint convertToMultiDOFJointTrajectoryPoint(const trajectory_msgs::MultiDOFJointTrajectory& trajectory)
+  // {
+  //   trajectory_msgs::MultiDOFJointTrajectoryPoint points;
+  //   point.transforms = trajectory.transforms;
+  //   point.velocities = trajectory.velocities;
+  //   point.accelerations = trajectory.accelerations;
+    
+  //   return points;
+  // }
+
+  void onDesiredState(const trajectory_msgs::MultiDOFJointTrajectory& des_state){
 
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       //  PART 3 | Objective: fill in xd, vd, ad, yawd
@@ -193,17 +204,19 @@ public:
       // ~~~~ begin solution
       
       // Position
-      geometry_msgs::Vector3 t = des_state.transforms[0].translation;
+      auto des_state_pt = des_state.points[0];
+
+      geometry_msgs::Vector3 t = des_state_pt.transforms[0].translation;
       xd << t.x, t.y, t.z;
       // ROS_INFO_NAMED("onDesiredState", "POS: %f %f %f", t.x, t.y, t.z);
 
       // Velocities
-      geometry_msgs::Vector3 v = des_state.velocities[0].linear;
+      geometry_msgs::Vector3 v = des_state_pt.velocities[0].linear;
       vd << v.x, v.y, v.z;
       // ROS_INFO_NAMED("onDesiredState", "VEL: %f %f %f", v.x, v.y, v.z);
 
       // Accelerations
-      geometry_msgs::Vector3 a = des_state.accelerations[0].linear;
+      geometry_msgs::Vector3 a = des_state_pt.accelerations[0].linear;
       ad << a.x, a.y, a.z;
       // ROS_INFO_NAMED("onDesiredState", "ACC: %f %f %f", a.x, a.y, a.z);
 
@@ -219,7 +232,7 @@ public:
       // ~~~~ begin solution
       
       tf::Quaternion q;
-      tf::quaternionMsgToTF(des_state.transforms[0].rotation , q);
+      tf::quaternionMsgToTF(des_state_pt.transforms[0].rotation , q);
       yawd = tf::getYaw(q);
       // ROS_INFO_NAMED("onDesiredState", "YAW: %f", yawd);
 
