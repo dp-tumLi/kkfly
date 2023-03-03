@@ -1,23 +1,38 @@
 # sets maximal velocity and acceleration values along the trajectory
 dynamic_params: {
-  max_v: 5.0,
-  max_a: 2.0
+  max_v: 2.5,
+  max_a: 0.8,
 }
 
 waypoints: {
   # your waypoints here. Think about how to best add any number of waypoints
   # and the according velocity and acceleration constraints.
-  pos_waypt_x:[2,   6,  10,  17, 22, 30],
-  pos_waypt_y:[-9, -9, -9, -9, -9, -9],
-  pos_waypt_z:[7,   7,  7,  7,  7,  7],
+  # pos_waypt_x:[2,   6,  10,  17, 22, 30],
+  # pos_waypt_y:[-9, -9, -9, -9, -9, -9],
+  # pos_waypt_z:[7,   7,  7,  7,  7,  7],
 
-  vel_waypt_x:[0,0,0,0,0,0],
-  vel_waypt_y:[0,0,0,0,0,0],
-  vel_waypt_z:[0,0,0,0,0,0],
+  # vel_waypt_x:[0,0,0,0,0,0],
+  # vel_waypt_y:[0,0,0,0,0,0],
+  # vel_waypt_z:[0,0,0,0,0,0],
 
-  acc_waypt_x:[0,0,0,0,0,0],
-  acc_waypt_y:[0,0,0,0,0,0],
-  acc_waypt_z:[0,0,0,0,0,0],
+  # acc_waypt_x:[0,0,0,0,0,0],
+  # acc_waypt_y:[0,0,0,0,0,0],
+  # acc_waypt_z:[0,0,0,0,0,0],
+
+  const_height: 8,
+  DilationRadius: 1,
+
+  pos_waypt_x: [1,4,7], 
+  pos_waypt_y: [0,0,0],
+  pos_waypt_z: [7,7,7],  
+
+  vel_waypt_x: [0,0,0],
+  vel_waypt_y: [0,0,0],
+  vel_waypt_z: [0,0,0,],
+
+  acc_waypt_x: [0,0,0],
+  acc_waypt_y: [0,0,0],
+  acc_waypt_z: [0,0,0],
 
   # pos_waypt_x:[10, 30, 35, 35, 25, 16, 12,  8,  5, 1],
   # pos_waypt_y:[0,  10, 25, 35, 39, 39, 39, 36, 17, 1],

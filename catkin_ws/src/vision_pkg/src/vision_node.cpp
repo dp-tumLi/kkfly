@@ -86,10 +86,10 @@ Eigen::Matrix4f getTransformationMatrix(const tf2_msgs::TFMessage& tf_msg)
         // temp_matrix[2][0],temp_matrix[2][1],temp_matrix[2][2],0,
         // 0,0,0,1;
 
-        // transformation_matrix <<1,0,0,0,
-        //                         0,1,0,0,
-        //                         0,0,1,0,
-        //                         0,0,0,1;
+        transformation_matrix <<1,0,0,0,
+                                0,1,0,0,
+                                0,0,1,0,
+                                0,0,0,1;
         // ROS_INFO("x: %f y: %f z: %f w: %f", quat.getX(),quat.getY(),quat.getZ(),quat.getW());
         // std::cout<<quat.getX()<<quat.getY()<<quat.getZ()<<quat.getW()<<std::endl;
         // // set translation part of transformation matrix

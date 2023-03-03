@@ -19,6 +19,8 @@ find_package(catkin REQUIRED COMPONENTS
   mav_visualization
   roslib
   yaml_cpp_catkin
+  trajectory_msgs
+  tf
 )
 catkin_simple(ALL_DEPS_REQUIRED)
 

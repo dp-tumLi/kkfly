@@ -40,6 +40,15 @@ ExternalProject_Add(unitysim
     INSTALL_COMMAND   cd ../unitysim/ && cp -rf . ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+# include(ExternalProject)
+# ExternalProject_Add(unitysim
+#     URL             https://www.dropbox.com/s/6d155q5z04uboph/FPSdemo1.zip?dl=0
+#     DOWNLOAD_NAME     FPSdemo1.zip
+#     CONFIGURE_COMMAND chmod +x ../unitysim/FPSdemo1.x86_64
+#     BUILD_COMMAND     ""
+#     INSTALL_COMMAND   cd ../unitysim/ && cp -rf . ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
+
 ExternalProject_Get_Property(unitysim DOWNLOAD_DIR)
 set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
     "${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_BIN_DESTINATION}/."

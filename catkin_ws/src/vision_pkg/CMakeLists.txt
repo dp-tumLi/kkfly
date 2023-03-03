@@ -15,10 +15,10 @@ endif()
 
 # add_compile_options(-pthread)
 
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/home/li/catkin_ws/devel_isolated/tf2_geometry_msgs")
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/home/li/catkin_ws/devel_isolated/tf2")
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/home/li/catkin_ws/devel_isolated/tf2_ros")
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/home/li/catkin_ws/devel_isolated/tf2_msgs")
+#set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/home/li/catkin_ws/devel_isolated/tf2_geometry_msgs")
+#set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/home/li/catkin_ws/devel_isolated/tf2")
+#set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/home/li/catkin_ws/devel_isolated/tf2_ros")
+#set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/home/li/catkin_ws/devel_isolated/tf2_msgs")
 
 find_package(catkin REQUIRED COMPONENTS
 pcl_ros
