@@ -1,0 +1,13 @@
+<launch>
+  <node name="octomap_server_2d" pkg="octomap_server" type="octomap_server_node" ns="octomap_2d_02">
+    <param name="frame_id" type="string" value="world" />
+    <param name="resolution" value = "1"/>
+    <param name="pointcloud_min_z" value="6.5" />
+    <param name="pointcloud_max_z" value="inf" />
+    <param name="sensor_model/max_range" value="20" />
+    <param name = "height_map" value = "true" />
+    <param name = "latch" value = "false" /> 
+
+    <remap from="cloud_in" to="/points/filtered"/>
+  </node>
+</launch>

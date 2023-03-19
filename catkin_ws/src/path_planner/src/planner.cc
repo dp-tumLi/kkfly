@@ -1,8 +1,5 @@
 #include <planner.h>
-#include <astar.h>
-#include <findGoalatBoundary.h>
-#include "../include/frontgoal.h"
-#include "../include/wayptrgenerator.h"
+
 
 BasicPlanner::BasicPlanner(ros::NodeHandle& nh) :
         nh_(nh),
@@ -11,26 +8,12 @@ BasicPlanner::BasicPlanner(ros::NodeHandle& nh) :
         current_velocity_(Eigen::Vector3d::Zero()),
         current_pose_(Eigen::Affine3d::Identity()) {
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //  To Do: Load Trajectory Parameters from file
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    //
-    // In this section, you need to use node handler to get max v and max a params
-    //
-    // ~~~~ begin solution
-    //
-    //     **** FILL IN HERE ***
     if (!nh_.getParam(ros::this_node::getName() + "/dynamic_params/max_v", max_v_)){
          ROS_WARN("[planner] param max_v not found");
     }
     if (!nh_.getParam(ros::this_node::getName() + "/dynamic_params/max_a", max_a_)){
         ROS_WARN("[planner] param max_a not found");
     }
-    //
-    // ~~~~ end solution
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    //                                 end
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // create publisher for RVIZ markers
     pub_markers_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_markers", 0);
@@ -80,20 +63,67 @@ void BasicPlanner::mapCallback(const nav_msgs::OccupancyGrid& gridmap){
     std::cout<<"row: "<<map_temp.size()<<" column: "<<map_temp[0].size()<<std::endl;
 
     map_matrix_ = map_temp;
+
+    // update the vertex of the map in world coordinate
+    vertexA_.x = map_origin_x_;
+    vertexA_.y = map_origin_y_;
+    vertexB_.x = map_origin_x_ + map_matrix_[0].size() * map_resolution_;
+    vertexB_.y = map_origin_y_;
+    vertexC_.x = map_origin_x_ + map_matrix_[0].size() * map_resolution_;
+    vertexC_.y = map_origin_y_ + map_matrix_.size() * map_resolution_;
+    vertexD_.x = map_origin_x_;
+    vertexD_.y = map_origin_y_ + map_matrix_.size() * map_resolution_;
+
+    std::cout<<"Four Vertex of the map in World coordinate: "<<std::endl;
+    std::cout<<"vertex A: "<<vertexA_.x<<" "<<vertexA_.y<<std::endl;
+    std::cout<<"vertex B: "<<vertexB_.x<<" "<<vertexB_.y<<std::endl;
+    std::cout<<"vertex C: "<<vertexC_.x<<" "<<vertexC_.y<<std::endl;
+    std::cout<<"vertex D: "<<vertexD_.x<<" "<<vertexD_.y<<std::endl;
+
+
+    // update the direction goal in map coordinate
+    if (!directionGoals_inWorld_.empty()){
+        for (auto &directionGoal: directionGoals_inWorld_){
+        directionGoal.x_m = (directionGoal.y - map_origin_y_) / map_resolution_ - 1;
+        directionGoal.y_m = (directionGoal.x - map_origin_x_) / map_resolution_ - 1;
+        std::cout<<"Dir x_m "<<directionGoal.x_m<<" y_m "<<directionGoal.y_m<<std::endl; 
+        }
+    }
+    
+    // check the covery of of goal point
+    CheckCovery();
+    int tempcount = 1;
+    for (auto testobj:directionGoals_inWorld_){
+        if (testobj.inside){
+            std::cout<<"The "<<tempcount<<" th inside is true"<<std::endl;
+        }
+        tempcount ++ ;
+    }
+
+    
+}
+
+void BasicPlanner::InitDirectionGoals(){
+    std::vector<double> directionGoals_x, directionGoals_y;
+    if (!nh_.getParam(ros::this_node::getName() + "/waypoints/directionGoals_x", directionGoals_x)){
+    ROS_WARN("[planner] param directionGoals_x not found");}
+    if (!nh_.getParam(ros::this_node::getName() + "/waypoints/directionGoals_y", directionGoals_y)){
+    ROS_WARN("[planner] param directionGoals_y not found");}
+    size_t number_DirGoals = directionGoals_x.size();
+    std::vector<SAFER::DirGoals> temp_goals;
+    if (number_DirGoals > 0){
+        std::cout<<"START load initial direction goals!"<<std::endl;
+        for (size_t i = 0; i < number_DirGoals; i ++){
+            temp_goals.push_back(SAFER::DirGoals(directionGoals_x[i],directionGoals_y[i], 1, 1, false, false));
+        }
+        directionGoals_inWorld_ = temp_goals;
+    }    
 }
 
 void BasicPlanner::poseCallback(const nav_msgs::Odometry::ConstPtr& odom){
     current_pos_x_ = odom->pose.pose.position.x;
     current_pos_y_ = odom->pose.pose.position.y;
 
-    // call for test
-    // auto var = RealPoseToMapPose();
-
-    // call for test
-    // WayPtrGenerator();
-
-    // call for test
-    // MapWayPtrToRealWorld();
 }
 
 std::pair<int, int> BasicPlanner::RealPoseToMapPose(){
@@ -106,6 +136,7 @@ std::pair<int, int> BasicPlanner::RealPoseToMapPose(){
 
     // test for current pos:
     std::cout<<"current position in World: x "<<current_pos_x_<<" y "<<current_pos_y_<<std::endl;
+
 
     return drone_map_pose;
 }
@@ -123,77 +154,170 @@ std::vector<std::pair<int, int>> BasicPlanner::WayPtrGenerator(){
 
     int DilationRadius = 1;
     if (!nh_.getParam(ros::this_node::getName() + "/waypoints/DilationRadius", DilationRadius)) {
-    ROS_ERROR("Failed to get param const_height!"); }
+    ROS_ERROR("Failed to get param DilationRadius!"); }
 
     auto map_processed = goal.DilateObstacle(DilationRadius);
+
+
     // test for print the dilated map
-    for (auto row : map_processed) {
-		for (int cell : row) {
-			std::cout << cell << " ";
-		}
-		std::cout << std::endl;
-	}
+    // for (auto row : map_processed) {
+	// 	for (int cell : row) {
+	// 		std::cout << cell << " ";
+	// 	}
+	// 	std::cout << std::endl;
+	// }
 
     // auto next_goal = goal.findGoal(map_processed);
-    auto next_goal = goal.findGoal4(map_processed,current_position.first,current_position.second);
-
+    // auto next_goal = goal.findGoal4(map_processed,current_position.first,current_position.second);
+    // int goalX = next_goal.x;
+    // int goalY = next_goal.y;
  
-    std::cout<<"goal pos in map x: "<<next_goal.x<<" y: "<<next_goal.y<<" p: "<<next_goal.priority<<std::endl;
+    // std::cout<<"goal pos in map x: "<<next_goal.x<<" y: "<<next_goal.y<<" p: "<<next_goal.priority<<std::endl;
 
     SAFE::Matrix SafeMatrix = map_processed;
     // SAFE::Matrix SafeMatrix = map_matrix_;
 
-    SAFE::Point goalptr = SAFE::findGoal(SafeMatrix, current_position.first, current_position.second);
-    int goalX = goalptr.first;
-	int goalY = goalptr.second;
+    // SAFE::Point goalptr = SAFE::findGoal(SafeMatrix, current_position.first, current_position.second);
 
-    std::cout<<"goal pos in map x: "<<goalX<<" y: "<<goalY<<std::endl;
 
+
+    // PART of choosing the most intelligent goal toward some predefined direction points
+    int max_groups = 5;
+    int min_length = 6;
+    if (!nh_.getParam(ros::this_node::getName() + "/dynamic_params/min_length", min_length)){
+         ROS_WARN("[planner] param min_length not found");
+    }
+    if (!nh_.getParam(ros::this_node::getName() + "/dynamic_params/max_groups", max_groups)){
+         ROS_WARN("[planner] param max_groups not found");
+    }    
+    std::vector<std::pair<int, int>> goalptrs = FindFinalGoal(SafeMatrix, max_groups, min_length
+                                                // directionGoals_inWorld
+                                                );
+
+    for (auto goalptr: goalptrs){
+        int goalX = goalptr.first;
+        int goalY = goalptr.second;
+        std::cout<<"goal pos in map x: "<<goalX<<" y: "<<goalY<<std::endl;
+    }
 
 	Dijkstra Dijkstra(map_processed);
 
+    waypoints_inMap = Dijkstra.DijkstraPlanner(current_position, goalptrs);
+
+
+
+
     // check if the start position really makes sense
-    if (Dijkstra.VerifyStart(map_matrix_, current_position.first, current_position.second)){
+    // if (Dijkstra.VerifyStart(map_matrix_, current_position.first, current_position.second)){
 
-        std::vector<std::pair<int, int>> path = Dijkstra.findShortestPath(current_position.first,current_position.second, goalX, goalY);
+    //     std::vector<std::pair<int, int>> path = Dijkstra.findShortestPath(current_position.first,current_position.second, goalX, goalY);
         
-        if (!path.empty()){
-            for (auto wayptr: path){
-            waypoints_inMap.push_back(wayptr);
+    //     if (!path.empty()){
+    //         for (auto wayptr: path){
+    //         waypoints_inMap.push_back(wayptr);
 
-            std::cout<<"waypoint in map x: "<<wayptr.first<<" y :"<<wayptr.second<<std::endl;
-            }
-        }
-    }
-
-    //test for aster
-
-
-    // Astar::Point goalpoint(goalptr.first, goalptr.second);
-    // Astar::Point startpoint(current_position.first, current_position.second);
-    // Astar::PathGenerator planner;
-
-    // std::vector<std::vector<int>> AstarMap = map_processed;
-    // auto waypoints = planner.planPath(startpoint, goalpoint, AstarMap,5);
-    // if(!waypoints.empty()){
-    //     for (auto waypoint : waypoints) {
-    //     std::cout<<"waypoint in map x: "<<waypoint.x<<" y :"<<waypoint.y<<std::endl;
-    //     waypoints_inMap.push_back(std::make_pair(waypoint.x, waypoint.y));
+    //         std::cout<<"waypoint in map x: "<<wayptr.first<<" y :"<<wayptr.second<<std::endl;
+    //         }
     //     }
     // }
     // else{
-    //     std::cout<<"no such a path found!"<<std::endl;
+    //     std::cout<<"Verified a failure start position!"<<std::endl;
     // }
+    
+    
 
-    // store the wayptr in private attribute for path detection
     waypoints_inMap_ = waypoints_inMap;
 
     return waypoints_inMap;
 }
 
+
+// check now if the predefined goal points are covered by the map
+bool BasicPlanner::CheckCovery(){
+    bool Checkflag = false;
+    // actualize the vertices of the map
+    if (!directionGoals_inWorld_.empty()){
+        for (auto &DirGoal: directionGoals_inWorld_){
+            std::cout<<"inside checkcovery for loop"<<std::endl;
+            if (SAFER::IsPointInMatrix(DirGoal, vertexA_, vertexB_, vertexC_, vertexD_)){
+                std::cout<<"inside checkcovery IF loop"<<std::endl;
+                DirGoal.inside = true;
+                if (map_matrix_[DirGoal.x_m][DirGoal.y_m] == 100 || map_matrix_[DirGoal.x_m][DirGoal.y_m] == 0){
+                    // do we need the x_m y_m to be actualized insome callback function such that it is realtime
+                    DirGoal.visited = true;
+                    std::cout<<"inside checkcovery 2nd IF loop"<<std::endl;
+                }
+                Checkflag = true;
+            }
+        }
+        return Checkflag;
+    }
+
+    else{
+        return Checkflag;
+    }
+}
+// find the final goal based on some given predefined direction position in World.
+std::vector<std::pair<int, int>> BasicPlanner::FindFinalGoal(const vector<vector<int>>& SafeMatrix,
+                                                int maxGroups, int minLength
+                                                // std::vector<std::pair<int,int>> directionGoals_inWorld
+                                                ){
+    auto boundaries = SAFER::getBoundaryPoints(SafeMatrix);
+    auto segments = SAFER::splitSegments(boundaries, maxGroups, minLength);
+    std::vector<std::pair<int, int>> goalcandidate; // goal candidate in map 
+    int count = 1;
+	for (auto seg: segments){
+		auto middlepoint = SAFER::computeSegmentMidpoint(seg);
+		std::cout<<"the "<<count<<"th segment middle point x "<<middlepoint.first
+        <<" y "<<middlepoint.second<<std::endl;
+        goalcandidate.push_back(middlepoint);
+        count ++;
+    }
+
+
+    std::pair<int, int> chosenDirGoal;
+    int whichGoal = 1;
+    for (auto directionGoal: directionGoals_inWorld_){
+        std::cout<<"The "<<whichGoal<<" th Goal is chosen"<<std::endl;
+        whichGoal ++;
+        std::cout<<"The current dir Goal "<<directionGoal.x<<" "<<directionGoal.y<<std::endl;
+        if (!directionGoal.visited){
+            chosenDirGoal.first = directionGoal.x_m;
+            chosenDirGoal.second = directionGoal.y_m;
+            std::cout<<"The dir chosen with map coordinate: "<<chosenDirGoal.first<<" "<<chosenDirGoal.second<<std::endl;
+            break;
+        }
+    }
+
+    std::vector<std::pair<int, int>> NearesToFarGoals = SortGoals(goalcandidate, chosenDirGoal);
+
+    return NearesToFarGoals;
+}
+
+std::vector<std::pair<int, int>> BasicPlanner::SortGoals(std::vector<std::pair<int, int>> & Goalcandidate, const std::pair<int, int>& Dirgoal){
+	std::pair<int, int> referencePoint = Dirgoal; 
+
+	auto distance = [&](const std::pair<int, int>& p) -> double {
+		double dx = p.first - referencePoint.first;
+		double dy = p.second - referencePoint.second;
+		return std::sqrt(dx*dx + dy*dy);
+	};
+	
+	std::sort(Goalcandidate.begin(), Goalcandidate.end(), [&](const std::pair<int, int>& p1, const std::pair<int, int>& p2) -> bool {
+    	return distance(p1) < distance(p2);
+	});
+
+    //DO we NEED to only remain the first 5 candidates?
+    // if (Goalcandidate.size() > 5){
+    //     Goalcandidate.resize(5);
+    // }
+
+	return Goalcandidate;
+}
+
+
 std::vector<std::pair<int, int>> BasicPlanner::MapWayPtrToRealWorld(){
 
-    
     auto waypoints_inMap = WayPtrGenerator();
     std::vector<std::pair<int, int>> wayptr_inWorld_Array;
 
@@ -234,74 +358,35 @@ bool BasicPlanner::ReachedGoal(int threshold_dis){
 // There exists a task, we should permanently check if the planed way path has collision with 
 // new explored map.
 bool BasicPlanner::CheckIfPathCollision() {
-    for (const auto& eachptr: waypoints_inMap_){
-      std::cout<<"map grid value: "<<map_matrix_[eachptr.first][eachptr.second]<<std::endl;
-      if (map_matrix_[eachptr.first][eachptr.second] == 100){
-        std::cout<<eachptr.first<<","<<eachptr.second<<" has ONE collision!"<<std::endl;
+    bool collision_detected = false;
 
-        return false;
-      }
-      else{
-        std::cout<<"we have NOT detected collision!"<<std::endl;
-        
-        return true;
-      }
+    for (const auto& eachptr : waypoints_inMap_) {
+        // std::cout << "map grid value: " << map_matrix_[eachptr.first][eachptr.second] << std::endl;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                int nx = eachptr.first + dx;
+                int ny = eachptr.second + dy;
+                if (map_matrix_[nx][ny]==100){
+                    std::cout << eachptr.first << "," << eachptr.second << " has ONE collision!" << std::endl;
+                    collision_detected = true;
+                    break;
+                }
+            }
+        }
     }
-  };
+    
+
+    if (collision_detected) {
+        return false;  // collision detected
+    } else {
+        std::cout << "we have NOT detected collision!" << std::endl;
+        return true;  // no collision detected
+    }
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // part for test the rotation motion at initial position
-bool BasicPlanner::RotationFirst(){
-    // Create a MultiDOFJointTrajectory message
-    auto rotation = qr_;
-    while(ros::ok()){
-
-    
-    trajectory_msgs::MultiDOFJointTrajectory traj;
-
-    // Create a MultiDOFJointTrajectoryPoint message
-    trajectory_msgs::MultiDOFJointTrajectoryPoint point;
-
-    // Set the time from start to 0
-    point.time_from_start = ros::Duration(0.0);
-
-    // Set the position to the current position of the drone
-    point.transforms.resize(1);
-    point.transforms[0].translation.x = current_pos_x_;
-    point.transforms[0].translation.y = current_pos_y_;
-    point.transforms[0].translation.z = 6;
-
-    // Set the orientation to the current orientation of the drone
-
-    // rotation.z = rotation.z*ros::Time::now();
-    point.transforms[0].rotation = rotation;
-
-    // Set the linear velocity and acceleration to zero
-    point.velocities.resize(1);
-    point.velocities[0].linear.x = 0.0;
-    point.velocities[0].linear.y = 0.0;
-    point.velocities[0].linear.z = 0.0;
-    point.accelerations.resize(1);
-    point.accelerations[0].linear.x = 0.0;
-    point.accelerations[0].linear.y = 0.0;
-    point.accelerations[0].linear.z = 0.0;
-
-    // Set the angular velocity and acceleration to non-zero values
-    point.velocities[0].angular.z = M_PI/2.0; // rotate at pi/2 radians/sec
-    point.accelerations[0].angular.z = 0.0;
-
-    // Add the point to the trajectory
-    traj.points.push_back(point);
-
-    // Publish the trajectory
-    traj.header.frame_id = "world";
-    pub_trajectory_rot_.publish(traj);
-
-    }
-
-    return true;
-
-}
 
 std::pair<Eigen::VectorXd, Eigen::VectorXd> BasicPlanner::RotCommand(){
     // mav_trajectory_generation::Trajectory trajectory;
@@ -329,21 +414,20 @@ std::pair<Eigen::VectorXd, Eigen::VectorXd> BasicPlanner::RotCommand(){
     // rotation for the first waypoint
     Eigen::Vector4d Vel_first;
     Vel_first << 0.0,0.0,0.0,0.0;
-    // planTrajectoryRotation(firstRotPose, Vel_first, &trajectory);
-    // publishTrajectory(trajectory);
+    
+    return std::make_pair(firstRotPose, Vel_first);
+}
 
-    // process a few messages in the background - causes the uavPoseCallback to happen
-    // for (int i = 0; i < 20; i++) {
-    // ros::spinOnce();  
-    // }        
+std::pair<Eigen::VectorXd, Eigen::VectorXd> BasicPlanner::RotCommandForNext(){
+    // mav_trajectory_generation::Trajectory trajectory;
 
-    // // do the general trajectory
-    // planTrajectoryForMiddle(waypoints_inWorld, &trajectory);
-    // publishTrajectory(trajectory);
 
-    // // maybe also do the last waypoint rotation?
-    // return true;
-    std::cout<<"test: "<<firstRotPose.x()<<std::endl;
+    Eigen::VectorXd firstRotPose(4);
+    firstRotPose << current_pose_.translation(), double (360 * M_PI /180.0);
+
+    // rotation for the first waypoint
+    Eigen::Vector4d Vel_first;
+    Vel_first << 0.0,0.0,0.0,0.0;
     
     return std::make_pair(firstRotPose, Vel_first);
 }
@@ -379,10 +463,8 @@ bool BasicPlanner::planTrajectoryRotation(  const Eigen::VectorXd& goal_pos,
 
     // Optimze up to 4th order derivative (SNAP)
     const int derivative_to_optimize =
-            mav_trajectory_generation::derivative_order::SNAP;
+            mav_trajectory_generation::derivative_order::ANGULAR_ACCELERATION;
 
-    // we have 2 vertices:
-    // Start = current position
     // end = desired position and velocity
     mav_trajectory_generation::Vertex start(dimension), middle(dimension), end(dimension);
 
@@ -391,11 +473,6 @@ bool BasicPlanner::planTrajectoryRotation(  const Eigen::VectorXd& goal_pos,
         mav_msgs::yawFromQuaternion(
             (Eigen::Quaterniond)current_pose_.rotation());
     start_vel_4d << current_velocity_, 0.0;
-    // start_vel_4d << 0.0, 0.0, 0.0, 0.0;
-
-
-    // start.makeStartOrEnd(current_pose_.translation(),
-    //                      derivative_to_optimize);
 
     start.makeStartOrEnd(start_pos_4d,
                          derivative_to_optimize);
@@ -414,9 +491,13 @@ bool BasicPlanner::planTrajectoryRotation(  const Eigen::VectorXd& goal_pos,
                       goal_vel);
     // add waypoint to list
     vertices.push_back(end);
+
+    double max_v_rot = 0.5;
+    double max_a_rot = 0.5;
+
     // setimate initial segment times
     std::vector<double> segment_times;
-    segment_times = estimateSegmentTimes(vertices, max_v_, max_a_);
+    segment_times = estimateSegmentTimes(vertices, max_v_rot, max_a_rot);
     
     // Set up polynomial solver with default params
     mav_trajectory_generation::NonlinearOptimizationParameters parameters;
@@ -424,15 +505,176 @@ bool BasicPlanner::planTrajectoryRotation(  const Eigen::VectorXd& goal_pos,
     const int N = 10;
     mav_trajectory_generation::PolynomialOptimizationNonLinear<N> opt(dimension, parameters);
     opt.setupFromVertices(vertices, segment_times, derivative_to_optimize);
-    // constrain velocity and acceleration
-    opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::VELOCITY, 0.15);
-    opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::ACCELERATION, 0.1);
+
+    opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::VELOCITY, max_v_rot);
+    opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::ACCELERATION, max_a_rot);
     // solve trajectory
+
     opt.optimize();
-    // get trajectory as polynomial parameters
     opt.getTrajectory(&(*trajectory));
-    return true;
+    
 }
+
+
+// TODO: A trajectory generator position and yaw angle constraints along the whole path
+bool BasicPlanner::MotionMode(){
+    int motion = 1;
+    if (!nh_.getParam(ros::this_node::getName() + "/dynamic_params/motion", motion)){
+    ROS_WARN("[planner] param motion not found");}
+
+    if (motion == 1){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+int BasicPlanner::ReturnDisTolerance(){
+    int tol_dis = 8 ;
+    if (!nh_.getParam(ros::this_node::getName() + "/dynamic_params/tol_dis", tol_dis)){
+    ROS_WARN("[planner] param tol_dis not found");}
+
+    return tol_dis;
+}
+
+
+bool BasicPlanner::planTrajectory4D(const std::vector<std::pair<int, int>>& waypoints,
+                                    mav_trajectory_generation::Trajectory* trajectory){
+    std::vector<std::pair<int, int>> aux_wayptrs = waypoints;
+    const int dimension = 4;
+    double flyheight = 10;
+    if (!nh_.getParam(ros::this_node::getName() + "/waypoints/const_height", flyheight)) {
+    ROS_ERROR("Failed to get param const_height!"); }
+    std::vector<std::vector<float>> des_waypoints(dimension, std::vector<float>());
+    for (auto pathptr: aux_wayptrs){
+		des_waypoints[0].push_back(pathptr.first);
+		des_waypoints[1].push_back(pathptr.second);
+		des_waypoints[2].push_back(flyheight);
+        std::cout<<des_waypoints[0].back()<<" "<<des_waypoints[1].back()<<" "<<des_waypoints[2].back()<<std::endl;
+	}
+    std::cout<<"finish 1"<<std::endl;
+    
+    mav_trajectory_generation::Vertex::Vector vertices;
+
+    const int derivative_to_optimize =
+            mav_trajectory_generation::derivative_order::ACCELERATION;
+
+    mav_trajectory_generation::Vertex start(dimension), middle(dimension), end(dimension);
+
+    Eigen::Vector4d start_pos_4d, start_vel_4d;
+    start_pos_4d << des_waypoints[0][1], des_waypoints[1][1], des_waypoints[2][1],
+        mav_msgs::yawFromQuaternion(
+            (Eigen::Quaterniond)current_pose_.rotation());
+    start_vel_4d << current_velocity_, current_angular_velocity_[2];
+
+    start.makeStartOrEnd(start_pos_4d,
+                         derivative_to_optimize);
+
+    start.addConstraint(mav_trajectory_generation::derivative_order::VELOCITY,
+                        start_vel_4d);
+
+    vertices.push_back(start);
+
+
+
+    size_t NumberOfWayPtr = aux_wayptrs.size();
+    int stepsize = 1;
+    if (NumberOfWayPtr<=40 && NumberOfWayPtr>13){
+        stepsize = NumberOfWayPtr/10;
+    }
+    else if(NumberOfWayPtr>40 && NumberOfWayPtr<=80){
+        stepsize = NumberOfWayPtr/20;
+    }
+    else if(NumberOfWayPtr>80 && NumberOfWayPtr<=140){
+        stepsize = NumberOfWayPtr/30;
+
+    }else if(NumberOfWayPtr>140 && NumberOfWayPtr<=200){
+        stepsize = NumberOfWayPtr/40;
+    }
+    else if(NumberOfWayPtr > 200){
+        stepsize = 6;
+    }
+
+    Eigen::Vector4d aux_pose;
+    Eigen::VectorXd vel_transl(3);
+    for (size_t i = 2; i < des_waypoints[0].size()-1; i += stepsize){
+        double yaw = std::atan2(des_waypoints[1][i]-des_waypoints[1][i-1], des_waypoints[0][i]-des_waypoints[0][i-1]);
+        
+        std::cout<<double(yaw/M_PI*180)<<std::endl;;
+        // yaw = 0.0*M_PI/180;
+        // yaw = yaw + i*15*M_PI/180;
+        aux_pose << des_waypoints[0][i], des_waypoints[1][i], des_waypoints[2][i], yaw;
+        middle.addConstraint(mav_trajectory_generation::derivative_order::POSITION, aux_pose);
+        
+        // if (i < 5){
+        //     middle.addConstraint(mav_trajectory_generation::derivative_order::ANGULAR_VELOCITY, 0.5);
+        // }
+
+        vertices.push_back(middle);
+        middle.removeConstraint(mav_trajectory_generation::derivative_order::POSITION);
+
+
+        std::cout<<"finish 2"<<std::endl;
+
+    }
+    
+    Eigen::Vector4d goal_pos, goal_vel;
+    double yaw_end = std::atan2(des_waypoints[1][des_waypoints[0].size()-1]- des_waypoints[1][des_waypoints[0].size()-2],
+                       des_waypoints[0][des_waypoints[0].size()-1] - des_waypoints[0][des_waypoints[0].size()-2]);
+    std::cout<<"finish 3"<<std::endl;
+
+    goalX_ = des_waypoints[0][des_waypoints[0].size()-1];
+    goalY_ = des_waypoints[1][des_waypoints[1].size()-1];
+    goal_pos << goalX_, goalY_, flyheight, yaw_end;
+
+    goal_vel << 0.0, 0.0, 0.0 ,0.0;
+    std::cout<<"finish 4"<<std::endl;
+
+    end.makeStartOrEnd(goal_pos,
+                       derivative_to_optimize);
+
+    end.addConstraint(mav_trajectory_generation::derivative_order::VELOCITY,
+                      goal_vel);
+    vertices.push_back(end);
+    std::cout<<"finish 5"<<std::endl;
+
+    double max_v_rot = 2;
+    double max_a_rot = 2.5;
+    if (!nh_.getParam(ros::this_node::getName() + "/dynamic_params/max_v_rot", max_v_rot)){
+         ROS_WARN("[planner] param max_v_rot not found");
+    }
+    if (!nh_.getParam(ros::this_node::getName() + "/dynamic_params/max_a_rot", max_a_rot)){
+        ROS_WARN("[planner] param max_a_rot not found");
+    }
+    std::vector<double> segment_times;
+    segment_times = estimateSegmentTimes(vertices, max_v_rot, max_a_rot);
+    
+    mav_trajectory_generation::NonlinearOptimizationParameters parameters;
+    const int N = 10;
+    mav_trajectory_generation::PolynomialOptimizationNonLinear<N> opt(dimension, parameters);
+    opt.setupFromVertices(vertices, segment_times, derivative_to_optimize);
+
+    opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::VELOCITY, max_v_rot);
+    opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::ACCELERATION, max_a_rot);
+    opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::ANGULAR_VELOCITY, 0.5);
+    opt.addMaximumMagnitudeConstraint(mav_trajectory_generation::derivative_order::ANGULAR_ACCELERATION, 0.5);
+
+
+    try{
+        opt.optimize();
+        opt.getTrajectory(&(*trajectory));
+        return true;
+
+    } catch(const std::runtime_error& e){
+        std::cerr<<"Error during optimization: "<<e.what()<<std::endl;
+        return false;
+
+    }
+}
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -446,7 +688,7 @@ bool BasicPlanner::planTrajectory(mav_trajectory_generation::Trajectory* traject
 
     // Optimze up to 4th order derivative (SNAP)
     const int derivative_to_optimize =
-            mav_trajectory_generation::derivative_order::SNAP;
+            mav_trajectory_generation::derivative_order::ACCELERATION;
 
     // we have 2 vertices:
     // Start = current position
@@ -464,11 +706,11 @@ bool BasicPlanner::planTrajectory(mav_trajectory_generation::Trajectory* traject
     // add waypoint to list
     vertices.push_back(start);
 
-    std::vector<std::vector<float>> pos_waypt(dimension, std::vector<float>());
 
     double flyheight = 10;
     if (!nh_.getParam(ros::this_node::getName() + "/waypoints/const_height", flyheight)) {
     ROS_ERROR("Failed to get param const_height!"); }
+    std::vector<std::vector<float>> pos_waypt(dimension, std::vector<float>());
 
     auto waypoints_inWorld = MapWayPtrToRealWorld();
 	for (auto pathptr: waypoints_inWorld){
@@ -477,40 +719,36 @@ bool BasicPlanner::planTrajectory(mav_trajectory_generation::Trajectory* traject
 		pos_waypt[2].push_back(flyheight);
 	}
     u_int32_t NumberOfWayPtr = waypoints_inWorld.size();
-    std::vector<std::vector<float>> vel_waypt(dimension, std::vector<float>(NumberOfWayPtr,0));
-    std::vector<std::vector<float>> acc_waypt(dimension, std::vector<float>(NumberOfWayPtr,0));
+    std::cout<<"number of waypoints = "<<NumberOfWayPtr<<std::endl;
+
 
     Eigen::VectorXd pos_desired(dimension);
     Eigen::VectorXd vel_desired(dimension);
     Eigen::VectorXd acc_desired(dimension);
     
     int stepsize = 1;
-    if (NumberOfWayPtr<=20){
+    if (NumberOfWayPtr<=40 && NumberOfWayPtr>13){
         stepsize = (pos_waypt[0].size()-1)/10;
     }
-    else if(NumberOfWayPtr>20 && NumberOfWayPtr<=60){
+    else if(NumberOfWayPtr>40 && NumberOfWayPtr<=80){
         stepsize = (pos_waypt[0].size()-1)/20;
     }
-    else{
+    else if(NumberOfWayPtr>80 && NumberOfWayPtr<=140){
         stepsize = (pos_waypt[0].size()-1)/30;
+
+    }else if(NumberOfWayPtr>140 && NumberOfWayPtr<=200){
+        stepsize = (pos_waypt[0].size()-1)/40;
     }
 
-    for (unsigned int i = 0; i < pos_waypt[0].size()-1; i+=stepsize) 
+    for (unsigned int i = 0; i < pos_waypt[0].size()-2; i+=stepsize) 
     {
     std::cout<<"ADD Waypoints"<<std::endl;
     pos_desired << pos_waypt[0][i], pos_waypt[1][i], pos_waypt[2][i];
-    vel_desired << vel_waypt[0][i], vel_waypt[1][i], vel_waypt[2][i];
-    acc_desired << acc_waypt[0][i], acc_waypt[1][i], acc_waypt[2][i]; 
 
     middle.addConstraint(mav_trajectory_generation::derivative_order::POSITION, pos_desired);
-    // middle.addConstraint(mav_trajectory_generation::derivative_order::VELOCITY, vel_desired);
-    // middle.addConstraint(mav_trajectory_generation::derivative_order::ACCELERATION, acc_desired);
-
     vertices.push_back(middle);
-
     middle.removeConstraint(mav_trajectory_generation::derivative_order::POSITION);
-    // middle.removeConstraint(mav_trajectory_generation::derivative_order::VELOCITY);
-    // middle.removeConstraint(mav_trajectory_generation::derivative_order::ACCELERATION);
+
     }
 
     std::pair<int, int> last_pair = waypoints_inWorld.back();
@@ -518,8 +756,8 @@ bool BasicPlanner::planTrajectory(mav_trajectory_generation::Trajectory* traject
     goalY_ = last_pair.second;
     Eigen::Vector3d goal_pos, goal_vel;
     goal_vel << 0.0, 0.0, 0.0;
-    goal_pos << goalX_, goalY_, 6.0;
-    std::cout <<"goal ptr: "<<goal_pos.x()<<""<<goal_pos.y()<<""<<goal_pos.z()<<std::endl;
+    goal_pos << goalX_, goalY_, flyheight;
+    std::cout <<"goal ptr: "<<goal_pos.x()<<""<<goal_pos.y()<<" "<<goal_pos.z()<<std::endl;
     end.makeStartOrEnd(goal_pos,
                        derivative_to_optimize);
     // set start point's velocity to be constrained to current velocity
@@ -557,7 +795,8 @@ void BasicPlanner::uavOdomCallback(const nav_msgs::Odometry::ConstPtr& odom) {
 
     // store current velocity
     tf::vectorMsgToEigen(odom->twist.twist.linear, current_velocity_);
-
+    
+    tf::vectorMsgToEigen(odom->twist.twist.angular, current_angular_velocity_);
           
     tf::quaternionMsgToEigen (odom->pose.pose.orientation, q_);
     qr_ = odom->pose.pose.orientation;
@@ -602,19 +841,7 @@ bool BasicPlanner::planTrajectory(  const Eigen::VectorXd& goal_pos,
     // add waypoint to list
     vertices.push_back(start);
 
-    /******* Configure trajectory *******/
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //  To Do: Set up trajectory waypoints
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    //
-    // In this section, you need to
-    // - load waypoint definition (pos, vel, acc) per dimension from param file
-    // - dynamically set constraints for each (and only where needed)
-    // - push waypoints to vertices
-    //
-    // ~~~~ begin solution
-    //
-    //     **** FILL IN HERE ***
+
     std::vector<std::vector<float>> pos_waypt(dimension, std::vector<float>());
     std::vector<std::vector<float>> vel_waypt(dimension, std::vector<float>());
     std::vector<std::vector<float>> acc_waypt(dimension, std::vector<float>());
@@ -637,20 +864,6 @@ bool BasicPlanner::planTrajectory(  const Eigen::VectorXd& goal_pos,
         ROS_ERROR("Failed to get param acc_waypt_y!"); }
     if (!nh_.getParam(ros::this_node::getName() + "/waypoints/acc_waypt_z", acc_waypt[2])) {
         ROS_ERROR("Failed to get param acc_waypt_z!"); }
-
-    // double flyheight = 10;
-    // if (!nh_.getParam(ros::this_node::getName() + "/waypoints/const_height", flyheight)) {
-    // ROS_ERROR("Failed to get param const_height!"); }
-
-    // auto waypoints_inWorld = MapWayPtrToRealWorld();
-	// for (auto pathptr: waypoints_inWorld){
-	// 	pos_waypt[0].push_back(pathptr.first);
-	// 	pos_waypt[1].push_back(pathptr.second);
-	// 	pos_waypt[2].push_back(flyheight);
-	// }
-    // u_int32_t NumberOfWayPtr = waypoints_inWorld.size();
-    // std::vector<std::vector<float>> vel_waypt(dimension, std::vector<float>(NumberOfWayPtr,0));
-    // std::vector<std::vector<float>> acc_waypt(dimension, std::vector<float>(NumberOfWayPtr,0));
 
     Eigen::VectorXd pos_desired(dimension);
     Eigen::VectorXd vel_desired(dimension);
@@ -675,11 +888,6 @@ bool BasicPlanner::planTrajectory(  const Eigen::VectorXd& goal_pos,
         middle.removeConstraint(mav_trajectory_generation::derivative_order::ACCELERATION);
         }
 
-    //
-    // ~~~~ end solution
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    //                                 end
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     /******* Configure end point *******/
     // set end point constraints to desired position and set all derivatives to zero

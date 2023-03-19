@@ -2,7 +2,7 @@
     <arg name="mav_name" default="firefly"/>
 
         <!--- Trajectory planner -->
-        <node name="planner" pkg="path_planner" type="path_planner" output="screen" clear_params = "true">
+        <node name="planner" pkg="path_planner" type="path_planner" output="screen" clear_params = "true" respawn = "true" max = "3">
             <rosparam command="load" file="$(find path_planner)/config/trajectory_config.yaml"/>
         </node>
 

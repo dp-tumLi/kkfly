@@ -27,6 +27,10 @@ catkin_simple(ALL_DEPS_REQUIRED)
 cs_add_executable(path_planner
         src/planner.cc
         src/planner_node.cc
+        src/findGoalatBoundary.cc
+        src/basicStructure.cc
+        src/frontgoal.cc
+        src/wayptrgenerator.cc
         )
 
 cs_install()
@@ -121,7 +125,7 @@ cs_export()
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+ INCLUDE_DIRS include
 #  LIBRARIES basic_waypoint_pkg
 #  CATKIN_DEPENDS eigen_catkin mav_msgs mav_planning_msgs mav_trajectory_generation mav_trajectory_generation_ros mav_visualization roslib
 #  DEPENDS system_lib

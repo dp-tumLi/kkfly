@@ -1,3 +1,21 @@
+/*
+ * planner.h provides different diverse methods of trajectory generation,
+ * callback functions for actualization of map, drone state, map state 
+ * checking, coordinate transformation and neccessary assistant function
+ * of some different purpose.
+ * 
+ * we provide a motion combination.
+ * A) The basic motion, composed with do first 360° rotation for mapping 
+ * neighbouring buildings, and a 3D trajectory for generic movenment from
+ * current position to some goal position
+ * 
+ * B) a high level planned motion, but the the first 360° rotation will be
+ * not neglected, then with the 4D trajectory incl yaw movement, such that
+ * quadrotor always towards the direction where it flys like humand does. 
+ * Which leads to a besser mapping capacity.
+ *
+ */
+
 #ifndef BASIC_WAYPOINT_PKG_PLANNER_H
 #define BASIC_WAYPOINT_PKG_PLANNER_H
 
@@ -17,6 +35,11 @@
 #include <tf/transform_broadcaster.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <tf/transform_broadcaster.h>
+
+#include <findGoalatBoundary.h>
+#include <frontgoal.h>
+#include <wayptrgenerator.h>
+#include <basicStructure.h>
 
 class BasicPlanner {
 public:
@@ -65,11 +88,30 @@ public:
     // check if goal reached
     bool ReachedGoal(int threshold_dis);
     bool CheckIfPathCollision();
-    bool RotationFirst();
     std::pair<Eigen::VectorXd, Eigen::VectorXd> RotCommand();
+    std::pair<Eigen::VectorXd, Eigen::VectorXd> RotCommandForNext();
+    // other goal function 
+    std::vector<std::pair<int, int>> FindFinalGoal(const std::vector<std::vector<int>>& SafeMatrix,
+                                                int maxGroups, int minLength 
+                                                // std::vector<std::pair<int,int>> directionGoals_inWorld
+                                                );
+    
+    std::vector<std::pair<int, int>> SortGoals(std::vector<std::pair<int, int>> & Goalcandidate, const std::pair<int, int>& Dirgoal);
 
     // some tool functions
     Eigen::VectorXd ComputeWayPtrForTraj(const std::pair<int,int>& ptr, double height, double yaw, int dimension);
+    
+    void InitDirectionGoals();
+    bool CheckCovery();
+    
+    bool planTrajectory4D(const std::vector<std::pair<int, int>>& waypoints,
+                                    mav_trajectory_generation::Trajectory* trajectory);
+
+    bool planYaw(const std::vector<std::pair<int, int>>& waypoints,
+                                    mav_trajectory_generation::Trajectory* trajectory);
+                                    
+    bool MotionMode();
+    int ReturnDisTolerance();
 
 private:
     ros::Publisher pub_markers_;
@@ -103,7 +145,15 @@ private:
     double goalY_ = -9;
     std::vector<std::pair<int, int>> waypoints_inMap_;
     // std::vector<std::pair<int, int>> waypoints_inWorld_;
-
+    std::vector<SAFER::DirGoals> directionGoals_inWorld_{SAFER::DirGoals(100, 0, 1, 1, false, false),
+                                                        SAFER::DirGoals(100, -100, 1, 1, false, false),
+                                                        SAFER::DirGoals(0, -100, 1, 1, false, false),
+                                                        SAFER::DirGoals(-100, -100, 1, 1, false, false)
+                                                        };
+    SAFER::Vertex vertexA_ = SAFER::Vertex(float(map_origin_x_), float(map_origin_y_));
+    SAFER::Vertex vertexB_ = SAFER::Vertex(float(map_origin_x_), float(map_origin_y_));
+    SAFER::Vertex vertexC_ = SAFER::Vertex(float(map_origin_x_), float(map_origin_y_));
+    SAFER::Vertex vertexD_ = SAFER::Vertex(float(map_origin_x_), float(map_origin_y_));
 };
 
 #endif // BASIC_WAYPOINT_PKG_PLANNER_H

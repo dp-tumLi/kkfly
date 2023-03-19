@@ -35,6 +35,7 @@
     - general callback and publisher functionalities.
     - update used map informations and robot status.
     - coordinates, states transformation between grid map coordiante and unity world coordinate.
-    - sort the goal candiates based on the distance to the current chosen direction goal.
+    - sort the goal candiates based on the distance to the current chosen direction goal and send them to the path
+        planner, also it checks if the current direction goal is visited.
     - different types of trajectory optimizer incl. 4D and 3D i.e. with/without orientation contraints.
     - publisher of waypoints and trajectory are differently in `rviz` visualizable.

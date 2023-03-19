@@ -19,3 +19,9 @@
 [submodule "catkin_ws/src/yaml_cpp_catkin"]
 	path = catkin_ws/src/yaml_cpp_catkin
 	url = https://github.com/ethz-asl/yaml_cpp_catkin.git
+[submodule "catkin_ws/src/octomap_ros"]
+	path = catkin_ws/src/octomap_ros
+	url = https://github.com/OctoMap/octomap_ros.git
+[submodule "catkin_ws/src/octomap_msgs"]
+	path = catkin_ws/src/octomap_msgs
+	url = https://github.com/OctoMap/octomap_msgs.git

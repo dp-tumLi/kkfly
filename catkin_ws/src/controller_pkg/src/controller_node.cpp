@@ -73,7 +73,8 @@ class controllerNode{
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Controller parameters
-  double kx, kv, kr, komega; // controller gains - [1] eq (15), (16)
+  double kx, kv, kroll, kpitch, kz, komega; // controller gains - [1] eq (15), (16)
+  Eigen::Matrix3d kr;
 
   // Physical constants (we will set them below)
   double m;              // mass of the UAV
@@ -112,7 +113,7 @@ class controllerNode{
   }
 
 public:
-  controllerNode():e3(0,0,1),F2W(4,4),hz(1000.0),xd(0,-6,6){
+  controllerNode():e3(0,0,1),F2W(4,4),hz(1000.0),xd(0,-5,10){
 
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       //  PART 2 |  Initialize ROS callback handlers
@@ -159,8 +160,12 @@ public:
       // komega = 1.15;
       nh.getParam("/params/kx", kx);
       nh.getParam("/params/kv", kv);
-      nh.getParam("/params/kr", kr);
+      nh.getParam("/params/kv", kroll);
+      nh.getParam("/params/kz", kpitch);
+      nh.getParam("/params/kz", kz);
       nh.getParam("/params/komega", komega);
+
+      kr << kroll, 0.0, 0.0, 0.0, kpitch, 0.0, 0.0, 0.0, kz;
 //      kx = 10;
 //      kv = 5;
 //      kr = 11;
