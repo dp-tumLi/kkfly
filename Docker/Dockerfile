@@ -11,18 +11,21 @@ RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash'
 
 # install further ROS dependencies
 RUN apt-get update && apt-get install -y \
-        python-rosdep  \
-        python-rosinstall  \
-        python-rosinstall-generator  \
-        python-wstool  \
+	python3-pip\
+        python3-rosdep  \
+        python3-rosinstall  \
+        python3-rosinstall-generator  \
+        python3-wstool  \
         build-essential  \
-        python-rosdep \
+        python3-rosdep \
         ros-noetic-catkin  \
-        python-catkin-tools \
+        python3-catkin-tools \
 	libtool \
-	autoconf \
-	automake \
-	ros-melodic-rotors-simulator
+        python-is-python3 \
+        python3-pyqt5
+	#autoconf \
+	#automake \
+	#ros-melodic-rotors-simulator
 
 # install other packages
 RUN apt-get update && apt-get install -y ssh\
