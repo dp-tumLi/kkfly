@@ -73,7 +73,7 @@ RUN rm -rf /root/.ssh/
 
 # set working directory to project
 WORKDIR /home/kkfly/catkin_ws/
-
+RUN pip install --no-cache-dir -r anforderung.txt
 RUN catkin config --extend /opt/ros/noetic
 #RUN chmod +x build/nlopt/make_install_nlopt.sh
 RUN catkin build
