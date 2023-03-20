@@ -1,4 +1,4 @@
-FROM osrf/ros:melodic-desktop-bionic
+FROM osrf/ros:noetic-desktop-bionic
 
 ARG ssh_prv_key
 
@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-melodic-desktop-full \
     && rm -rf /var/lib/apt/lists/*
 
-RUN /bin/bash -c 'source /opt/ros/melodic/setup.bash'
+RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash'
 
 # install further ROS dependencies
 RUN apt-get update && apt-get install -y \
@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
         python-wstool  \
         build-essential  \
         python-rosdep \
-        ros-melodic-catkin  \
+        ros-noetic-catkin  \
         python-catkin-tools \
 	libtool \
 	autoconf \
@@ -71,11 +71,11 @@ RUN rm -rf /root/.ssh/
 # set working directory to project
 WORKDIR /home/kkfly/catkin_ws/
 
-RUN catkin config --extend /opt/ros/melodic
-RUN chmod +x build/nlopt/make_install_nlopt.sh
+RUN catkin config --extend /opt/ros/noetic
+#RUN chmod +x build/nlopt/make_install_nlopt.sh
 RUN catkin build
 
-RUN /bin/bash -c 'source /opt/ros/melodic/setup.bash'
+RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash'
 RUN /bin/bash -c 'source devel/setup.bash'
 
 
