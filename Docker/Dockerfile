@@ -1,10 +1,10 @@
-FROM osrf/ros:noetic-desktop-bionic
+FROM osrf/ros:noetic-desktop-focal
 
 ARG ssh_prv_key
 
 # install ROS
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-melodic-desktop-full \
+    ros-noetic-desktop-full \
     && rm -rf /var/lib/apt/lists/*
 
 RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash'
