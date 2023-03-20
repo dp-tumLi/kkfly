@@ -1,0 +1,4 @@
+Symlinking /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/lib/liboctomap_ros.so
+Symlinking /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/lib/pkgconfig/octomap_ros.pc
+Symlinking /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/share/octomap_ros/cmake/octomap_rosConfig.cmake
+Symlinking /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/share/octomap_ros/cmake/octomap_rosConfig-version.cmake

@@ -1,0 +1,4 @@
+[35m[1mScanning dependencies of target vision_node[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/vision_node.dir/src/vision_node.cpp.o[0m
+[100%] [32m[1mLinking CXX executable /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/vision_pkg/lib/vision_pkg/vision_node[0m
+[100%] Built target vision_node

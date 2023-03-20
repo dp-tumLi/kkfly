@@ -57,11 +57,11 @@ RUN echo "$ssh_prv_key" > /root/.ssh/id_rsa && \
 
 # clone the git repository using SSH connection
 WORKDIR /home
-RUN git clone git@github.com:TUM-AAS/autsys-projects-kkfly.git
+RUN git clone git@github.com:dp-tumLi/kkfly.git
 
 # fetch data from submodules
-WORKDIR /home/autsys-projects-kkfly/catkin_ws/src
-RUN git checkout -b yu
+WORKDIR /home/kkfly/catkin_ws/src
+
 RUN git submodule init
 RUN git submodule update
 
@@ -69,10 +69,12 @@ RUN git submodule update
 RUN rm -rf /root/.ssh/
 
 # set working directory to project
-WORKDIR /home/autsys-projects-kkfly/catkin_ws/
+WORKDIR /home/kkfly/catkin_ws/
 
 RUN catkin config --extend /opt/ros/melodic
 RUN catkin build
 
 RUN /bin/bash -c 'source /opt/ros/melodic/setup.bash'
 RUN /bin/bash -c 'source devel/setup.bash'
+
+

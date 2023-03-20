@@ -1,0 +1,454 @@
+[35m[1mScanning dependencies of target mav_msgs_generate_messages_cpp[0m
+[  0%] Built target mav_msgs_generate_messages_cpp
+[35m[1mScanning dependencies of target trajectory_msgs_generate_messages_nodejs[0m
+[  0%] Built target trajectory_msgs_generate_messages_nodejs
+[35m[1mScanning dependencies of target trajectory_msgs_generate_messages_lisp[0m
+[  0%] Built target trajectory_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target trajectory_msgs_generate_messages_cpp[0m
+[  0%] Built target trajectory_msgs_generate_messages_cpp
+[35m[1mScanning dependencies of target mav_msgs_generate_messages_py[0m
+[  0%] Built target mav_msgs_generate_messages_py
+[35m[1mScanning dependencies of target rosgraph_msgs_generate_messages_nodejs[0m
+[  0%] Built target rosgraph_msgs_generate_messages_nodejs
+[35m[1mScanning dependencies of target actionlib_msgs_generate_messages_py[0m
+[  0%] Built target actionlib_msgs_generate_messages_py
+[35m[1mScanning dependencies of target rosgraph_msgs_generate_messages_eus[0m
+[  0%] Built target rosgraph_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target actionlib_generate_messages_cpp[0m
+[  0%] Built target actionlib_generate_messages_cpp
+[35m[1mScanning dependencies of target mav_msgs_generate_messages_nodejs[0m
+[  0%] Built target mav_msgs_generate_messages_nodejs
+[35m[1mScanning dependencies of target trajectory_msgs_generate_messages_eus[0m
+[  0%] Built target trajectory_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target roscpp_generate_messages_py[0m
+[  0%] Built target roscpp_generate_messages_py
+[35m[1mScanning dependencies of target roscpp_generate_messages_eus[0m
+[  0%] Built target roscpp_generate_messages_eus
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_cpp[0m
+[  0%] Built target sensor_msgs_generate_messages_cpp
+[35m[1mScanning dependencies of target std_msgs_generate_messages_py[0m
+[  0%] Built target std_msgs_generate_messages_py
+[35m[1mScanning dependencies of target std_msgs_generate_messages_nodejs[0m
+[  0%] Built target std_msgs_generate_messages_nodejs
+[35m[1mScanning dependencies of target roscpp_generate_messages_cpp[0m
+[  0%] Built target roscpp_generate_messages_cpp
+[35m[1mScanning dependencies of target fla_msgs_generate_messages_py[0m
+[  0%] Built target fla_msgs_generate_messages_py
+[35m[1mScanning dependencies of target libsocket[0m
+[  3%] [34m[1mCreating directories for 'libsocket'[0m
+[  7%] [34m[1mPerforming download step (git clone) for 'libsocket'[0m
+Klone nach 'libsocket' …
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_nodejs[0m
+[  7%] Built target sensor_msgs_generate_messages_nodejs
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_eus[0m
+[  7%] Built target sensor_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_lisp[0m
+[  7%] Built target sensor_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_py[0m
+[  7%] Built target geometry_msgs_generate_messages_py
+[35m[1mScanning dependencies of target tf2_msgs_generate_messages_eus[0m
+[  7%] Built target tf2_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_py[0m
+[  7%] Built target sensor_msgs_generate_messages_py
+[35m[1mScanning dependencies of target roscpp_generate_messages_lisp[0m
+[  7%] Built target roscpp_generate_messages_lisp
+[35m[1mScanning dependencies of target actionlib_generate_messages_lisp[0m
+[  7%] Built target actionlib_generate_messages_lisp
+[35m[1mScanning dependencies of target rosgraph_msgs_generate_messages_py[0m
+[  7%] Built target rosgraph_msgs_generate_messages_py
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_cpp[0m
+[  7%] Built target geometry_msgs_generate_messages_cpp
+[35m[1mScanning dependencies of target tf2_msgs_generate_messages_py[0m
+[  7%] Built target tf2_msgs_generate_messages_py
+[35m[1mScanning dependencies of target std_msgs_generate_messages_cpp[0m
+[  7%] Built target std_msgs_generate_messages_cpp
+[35m[1mScanning dependencies of target rosgraph_msgs_generate_messages_lisp[0m
+[  7%] Built target rosgraph_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target tf_generate_messages_eus[0m
+Bereits auf 'master'
+Ihr Branch ist auf demselben Stand wie 'origin/master'.
+[  7%] Built target tf_generate_messages_eus
+[35m[1mScanning dependencies of target tf2_msgs_generate_messages_cpp[0m
+[  7%] Built target tf2_msgs_generate_messages_cpp
+[35m[1mScanning dependencies of target mav_msgs_generate_messages_lisp[0m
+[  7%] Built target mav_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target roscpp_generate_messages_nodejs[0m
+[  7%] Built target roscpp_generate_messages_nodejs
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_lisp[0m
+[ 11%] [34m[1mNo patch step for 'libsocket'[0m
+[ 11%] Built target geometry_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target tf_generate_messages_cpp[0m
+[ 15%] [34m[1mNo update step for 'libsocket'[0m
+[ 15%] Built target tf_generate_messages_cpp
+[35m[1mScanning dependencies of target fla_msgs_generate_messages_nodejs[0m
+[ 15%] Built target fla_msgs_generate_messages_nodejs
+[ 19%] [34m[1mPerforming configure step for 'libsocket'[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_lisp[0m
+[ 19%] Built target std_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target tf_generate_messages_lisp[0m
+-- The C compiler identification is GNU 9.4.0
+[ 19%] Built target tf_generate_messages_lisp
+[35m[1mScanning dependencies of target tf_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target trajectory_msgs_generate_messages_py[0m
+[ 19%] Built target tf_generate_messages_nodejs
+[ 19%] Built target trajectory_msgs_generate_messages_py
+[35m[1mScanning dependencies of target rosgraph_msgs_generate_messages_cpp[0m
+-- The CXX compiler identification is GNU 9.4.0
+-- Check for working C compiler: /usr/bin/cc
+[35m[1mScanning dependencies of target actionlib_generate_messages_eus[0m
+[ 19%] Built target rosgraph_msgs_generate_messages_cpp
+[ 19%] Built target actionlib_generate_messages_eus
+[35m[1mScanning dependencies of target actionlib_msgs_generate_messages_cpp[0m
+[35m[1mScanning dependencies of target actionlib_generate_messages_nodejs[0m
+[ 19%] Built target actionlib_msgs_generate_messages_cpp
+[ 19%] Built target actionlib_generate_messages_nodejs
+[35m[1mScanning dependencies of target actionlib_generate_messages_py[0m
+[ 19%] Built target actionlib_generate_messages_py
+[35m[1mScanning dependencies of target tf_generate_messages_py[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_eus[0m
+[ 19%] Built target std_msgs_generate_messages_eus
+[ 19%] Built target tf_generate_messages_py
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+[35m[1mScanning dependencies of target actionlib_msgs_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target actionlib_msgs_generate_messages_lisp[0m
+[ 19%] Built target actionlib_msgs_generate_messages_lisp
+[ 19%] Built target actionlib_msgs_generate_messages_nodejs
+[35m[1mScanning dependencies of target tf2_msgs_generate_messages_lisp[0m
+[ 19%] Built target tf2_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target tf2_msgs_generate_messages_nodejs[0m
+[ 19%] Built target tf2_msgs_generate_messages_nodejs
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Warning (dev) at /usr/share/cmake-3.16/Modules/CPack.cmake:569 (option):
+  Policy CMP0077 is not set: option() honors normal variables.  Run "cmake
+  --help-policy CMP0077" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+  For compatibility with older versions of CMake, option is clearing the
+  normal variable 'CPACK_BINARY_TZ'.
+Call Stack (most recent call first):
+  CMakeLists.txt:64 (INCLUDE)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake-3.16/Modules/CPack.cmake:571 (option):
+  Policy CMP0077 is not set: option() honors normal variables.  Run "cmake
+  --help-policy CMP0077" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+  For compatibility with older versions of CMake, option is clearing the
+  normal variable 'CPACK_BINARY_DEB'.
+Call Stack (most recent call first):
+  CMakeLists.txt:64 (INCLUDE)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake-3.16/Modules/CPack.cmake:574 (option):
+  Policy CMP0077 is not set: option() honors normal variables.  Run "cmake
+  --help-policy CMP0077" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+  For compatibility with older versions of CMake, option is clearing the
+  normal variable 'CPACK_BINARY_RPM'.
+Call Stack (most recent call first):
+  CMakeLists.txt:64 (INCLUDE)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake-3.16/Modules/CPack.cmake:575 (option):
+  Policy CMP0077 is not set: option() honors normal variables.  Run "cmake
+  --help-policy CMP0077" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+  For compatibility with older versions of CMake, option is clearing the
+  normal variable 'CPACK_BINARY_STGZ'.
+Call Stack (most recent call first):
+  CMakeLists.txt:64 (INCLUDE)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake-3.16/Modules/CPack.cmake:576 (option):
+  Policy CMP0077 is not set: option() honors normal variables.  Run "cmake
+  --help-policy CMP0077" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+  For compatibility with older versions of CMake, option is clearing the
+  normal variable 'CPACK_BINARY_TBZ2'.
+Call Stack (most recent call first):
+  CMakeLists.txt:64 (INCLUDE)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at /usr/share/cmake-3.16/Modules/CPack.cmake:577 (option):
+  Policy CMP0077 is not set: option() honors normal variables.  Run "cmake
+  --help-policy CMP0077" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+  For compatibility with older versions of CMake, option is clearing the
+  normal variable 'CPACK_BINARY_TGZ'.
+Call Stack (most recent call first):
+  CMakeLists.txt:64 (INCLUDE)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/build/simulation/libsocket-prefix/src/libsocket-build
+[ 23%] [34m[1mPerforming build step for 'libsocket'[0m
+make[3]: Warnung: Kein Jobserver verfügbar: -j1 wird gesetzt. Fügen Sie der Ursprungsregel
+„+“ hinzu.
+[35m[1mScanning dependencies of target socket_o[0m
+[  4%] [32mBuilding C object C/CMakeFiles/socket_o.dir/inet/libinetsocket.c.o[0m
+[01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/build/simulation/libsocket-prefix/src/libsocket/C/inet/libinetsocket.c:[m[K In function ‘[01m[Kcreate_inet_stream_socket[m[K’:
+[01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/build/simulation/libsocket-prefix/src/libsocket/C/inet/libinetsocket.c:221:9:[m[K [01;35m[Kwarning: [m[K‘[01m[Ksfd[m[K’ may be used uninitialized in this function [[01;35m[K-Wmaybe-uninitialized[m[K]
+  221 |         [01;35m[Kclose(sfd)[m[K;
+      |         [01;35m[K^~~~~~~~~~[m[K
+[  8%] [32mBuilding C object C/CMakeFiles/socket_o.dir/unix/libunixsocket.c.o[0m
+[  8%] Built target socket_o
+[35m[1mScanning dependencies of target socket[0m
+[ 12%] [32m[1mLinking C shared library libsocket.so[0m
+[ 12%] Built target socket
+[35m[1mScanning dependencies of target socket_int[0m
+[ 16%] [32m[1mLinking C static library libsocket_int.a[0m
+[ 16%] Built target socket_int
+[35m[1mScanning dependencies of target socket++_o[0m
+[ 20%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/dgramclient.cpp.o[0m
+[ 25%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/dgramoverstream.cpp.o[0m
+[ 29%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/framing.cpp.o[0m
+[ 33%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/inetbase.cpp.o[0m
+[ 37%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/inetclientstream.cpp.o[0m
+[ 41%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/inetserverdgram.cpp.o[0m
+[ 45%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/select.cpp.o[0m
+[ 50%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/streamclient.cpp.o[0m
+[ 54%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/unixclientdgram.cpp.o[0m
+[ 58%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/unixdgram.cpp.o[0m
+[ 62%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/unixserverstream.cpp.o[0m
+[ 66%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/exception.cpp.o[0m
+[ 70%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/inetclientdgram.cpp.o[0m
+[ 75%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/inetdgram.cpp.o[0m
+[ 79%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/inetserverstream.cpp.o[0m
+[ 83%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/socket.cpp.o[0m
+[ 87%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/unixbase.cpp.o[0m
+[ 91%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/unixclientstream.cpp.o[0m
+[ 95%] [32mBuilding CXX object C++/CMakeFiles/socket++_o.dir/unixserverdgram.cpp.o[0m
+[ 95%] Built target socket++_o
+[35m[1mScanning dependencies of target socket++[0m
+[100%] [32m[1mLinking CXX shared library libsocket++.so[0m
+[100%] Built target socket++
+[ 26%] [34m[1mPerforming install step for 'libsocket'[0m
+make[3]: Warnung: Kein Jobserver verfügbar: -j1 wird gesetzt. Fügen Sie der Ursprungsregel
+„+“ hinzu.
+[  8%] Built target socket_o
+[ 12%] Built target socket
+[ 16%] Built target socket_int
+[ 95%] Built target socket++_o
+[100%] Built target socket++
+[36mInstall the project...[0m
+-- Install configuration: "Release"
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/lib/libsocket.so
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/unixdgram.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/exception.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/inetclientdgram.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/libinetsocket.h
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/unixserverstream.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/dgramclient.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/streamclient.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/inetserverstream.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/unixclientdgram.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/socket.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/inetbase.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/inetserverdgram.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/unixclientstream.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/libunixsocket.h
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/select.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/inetclientstream.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/unixbase.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/unixserverdgram.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/inetdgram.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/dgramoverstream.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/framing.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/include/libsocket/epoll.hpp
+-- Installing: /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/lib/libsocket++.so
+[ 30%] [34m[1mCompleted 'libsocket'[0m
+[ 30%] Built target libsocket
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_eus[0m
+[ 30%] Built target geometry_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target fla_msgs_generate_messages_cpp[0m
+[ 30%] Built target fla_msgs_generate_messages_cpp
+[35m[1mScanning dependencies of target actionlib_msgs_generate_messages_eus[0m
+[ 30%] Built target actionlib_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target fla_msgs_generate_messages_eus[0m
+[ 30%] Built target fla_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target fla_msgs_generate_messages_lisp[0m
+[ 30%] Built target fla_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_nodejs[0m
+[ 30%] Built target geometry_msgs_generate_messages_nodejs
+[35m[1mScanning dependencies of target mav_msgs_generate_messages_eus[0m
+[ 30%] Built target mav_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target state_estimate_corruptor_node[0m
+[ 34%] [32mBuilding CXX object CMakeFiles/state_estimate_corruptor_node.dir/src/state_estimate_corruptor_node.cpp.o[0m
+[35m[1mScanning dependencies of target unitysim[0m
+[ 38%] [34m[1mCreating directories for 'unitysim'[0m
+[ 42%] [34m[1mPerforming download step (download, verify and extract) for 'unitysim'[0m
+-- Downloading...
+   dst='/home/li/kkfly_backup_ordner/kkfly/catkin_ws/build/simulation/unitysim-prefix/src/FPSdemo1.zip'
+   timeout='none'
+-- Using src='https://www.dropbox.com/s/64zc41m9devbu36/FPSdemo1.zip?dl=0'
+-- [download 100% complete]
+-- [download 0% complete]
+-- [download 1% complete]
+-- [download 2% complete]
+-- [download 3% complete]
+-- [download 4% complete]
+-- [download 5% complete]
+-- [download 6% complete]
+-- [download 7% complete]
+-- [download 8% complete]
+-- [download 9% complete]
+-- [download 10% complete]
+-- [download 11% complete]
+-- [download 12% complete]
+-- [download 13% complete]
+-- [download 14% complete]
+-- [download 15% complete]
+-- [download 16% complete]
+-- [download 17% complete]
+-- [download 18% complete]
+-- [download 19% complete]
+-- [download 20% complete]
+-- [download 21% complete]
+-- [download 22% complete]
+-- [download 23% complete]
+-- [download 24% complete]
+-- [download 25% complete]
+-- [download 26% complete]
+-- [download 27% complete]
+-- [download 28% complete]
+-- [download 29% complete]
+-- [download 30% complete]
+-- [download 31% complete]
+-- [download 32% complete]
+-- [download 33% complete]
+-- [download 34% complete]
+-- [download 35% complete]
+-- [download 36% complete]
+[ 46%] [32m[1mLinking CXX executable /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/lib/simulation/state_estimate_corruptor_node[0m
+-- [download 37% complete]
+-- [download 38% complete]
+-- [download 39% complete]
+-- [download 40% complete]
+[35m[1mScanning dependencies of target tcpstreamreader[0m
+-- [download 41% complete]
+-- [download 42% complete]
+-- [download 43% complete]
+-- [download 44% complete]
+[ 50%] [32mBuilding CXX object tcpimage/CMakeFiles/tcpstreamreader.dir/TCPStreamReader.cpp.o[0m
+-- [download 45% complete]
+-- [download 46% complete]
+-- [download 47% complete]
+-- [download 48% complete]
+-- [download 49% complete]
+-- [download 50% complete]
+-- [download 51% complete]
+-- [download 52% complete]
+-- [download 53% complete]
+-- [download 54% complete]
+-- [download 55% complete]
+-- [download 56% complete]
+-- [download 57% complete]
+-- [download 58% complete]
+[ 53%] [32m[1mLinking CXX shared library /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/lib/libtcpstreamreader.so[0m
+-- [download 59% complete]
+-- [download 60% complete]
+-- [download 61% complete]
+[ 53%] Built target tcpstreamreader
+[35m[1mScanning dependencies of target w_to_unity[0m
+-- [download 62% complete]
+-- [download 63% complete]
+-- [download 64% complete]
+[ 57%] [32mBuilding CXX object CMakeFiles/w_to_unity.dir/src/w_to_unity.cpp.o[0m
+-- [download 65% complete]
+-- [download 66% complete]
+-- [download 67% complete]
+-- [download 68% complete]
+-- [download 69% complete]
+-- [download 70% complete]
+-- [download 71% complete]
+[ 57%] Built target state_estimate_corruptor_node
+-- [download 72% complete]
+[35m[1mScanning dependencies of target tcpimage[0m
+[ 61%] [32mBuilding CXX object tcpimage/CMakeFiles/tcpimage.dir/TCPImageServer.cpp.o[0m
+-- [download 73% complete]
+-- [download 74% complete]
+-- [download 75% complete]
+-- [download 76% complete]
+-- [download 77% complete]
+-- [download 78% complete]
+-- [download 79% complete]
+-- [download 80% complete]
+-- [download 81% complete]
+-- [download 82% complete]
+[ 65%] [32m[1mLinking CXX shared library /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/lib/libtcpimage.so[0m
+-- [download 83% complete]
+[ 65%] Built target tcpimage
+-- [download 84% complete]
+[35m[1mScanning dependencies of target unity_ros[0m
+-- [download 85% complete]
+-- [download 86% complete]
+[ 69%] [32mBuilding CXX object CMakeFiles/unity_ros.dir/src/unity_ros.cpp.o[0m
+-- [download 87% complete]
+-- [download 88% complete]
+-- [download 89% complete]
+-- [download 90% complete]
+-- [download 91% complete]
+-- [download 92% complete]
+-- [download 93% complete]
+-- [download 94% complete]
+-- [download 95% complete]
+-- [download 96% complete]
+-- [download 97% complete]
+-- [download 98% complete]
+-- [download 99% complete]
+-- [download 100% complete]
+-- Downloading... done
+-- extracting...
+     src='/home/li/kkfly_backup_ordner/kkfly/catkin_ws/build/simulation/unitysim-prefix/src/FPSdemo1.zip'
+     dst='/home/li/kkfly_backup_ordner/kkfly/catkin_ws/build/simulation/unitysim-prefix/src/unitysim'
+-- extracting... [tar xfz]
+-- extracting... [analysis]
+-- extracting... [rename]
+-- extracting... [clean up]
+-- extracting... done
+[ 73%] [34m[1mNo patch step for 'unitysim'[0m
+[ 76%] [34m[1mNo update step for 'unitysim'[0m
+[ 80%] [34m[1mPerforming configure step for 'unitysim'[0m
+[ 84%] [34m[1mNo build step for 'unitysim'[0m
+[ 88%] [34m[1mPerforming install step for 'unitysim'[0m
+[ 92%] [34m[1mCompleted 'unitysim'[0m
+[ 92%] Built target unitysim
+In file included from [01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/unity_ros.cpp:7[m[K:
+[01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/rgb_camera_parser.h:[m[K In member function ‘[01m[Kvirtual bool RGBCameraParser::ParseMessage(const UnityHeader&, TCPStreamReader&, double)[m[K’:
+[01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/rgb_camera_parser.h:22:3:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+   22 |   [01;35m[K}[m[K
+      |   [01;35m[K^[m[K
+In file included from [01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/unity_ros.cpp:9[m[K:
+[01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/fisheye_camera_parser.h:[m[K In member function ‘[01m[Kvirtual bool FisheyeCameraParser::ParseMessage(const UnityHeader&, TCPStreamReader&, double)[m[K’:
+[01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/fisheye_camera_parser.h:20:3:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+   20 |   [01;35m[K}[m[K
+      |   [01;35m[K^[m[K
+In file included from [01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/unity_ros.cpp:10[m[K:
+[01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/imu_parser.h:[m[K In member function ‘[01m[Kvirtual bool IMUParser::ParseMessage(const UnityHeader&, TCPStreamReader&, double)[m[K’:
+[01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/imu_parser.h:42:3:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+   42 |   [01;35m[K}[m[K
+      |   [01;35m[K^[m[K
+In file included from [01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/unity_ros.cpp:11[m[K:
+[01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/true_state_parser.h:[m[K In member function ‘[01m[Kvirtual bool TrueStateParser::ParseMessage(const UnityHeader&, TCPStreamReader&, double)[m[K’:
+[01m[K/home/li/kkfly_backup_ordner/kkfly/catkin_ws/src/simulation/src/true_state_parser.h:88:3:[m[K [01;35m[Kwarning: [m[Kno return statement in function returning non-void [[01;35m[K-Wreturn-type[m[K]
+   88 |   [01;35m[K}[m[K
+      |   [01;35m[K^[m[K
+[ 96%] [32m[1mLinking CXX executable /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/lib/simulation/w_to_unity[0m
+[ 96%] Built target w_to_unity
+[100%] [32m[1mLinking CXX executable /home/li/kkfly_backup_ordner/kkfly/catkin_ws/devel/.private/simulation/lib/simulation/unity_ros[0m
+[100%] Built target unity_ros
