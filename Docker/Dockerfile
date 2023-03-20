@@ -60,7 +60,7 @@ WORKDIR /home
 RUN git clone git@github.com:dp-tumLi/kkfly.git
 
 # fetch data from submodules
-WORKDIR /home/kkfly/catkin_ws/src
+WORKDIR /home/kkfly/
 
 RUN git submodule init
 RUN git submodule update
@@ -72,7 +72,7 @@ RUN rm -rf /root/.ssh/
 WORKDIR /home/kkfly/catkin_ws/
 
 RUN catkin config --extend /opt/ros/melodic
-#RUN chmod +x build/nlopt/make_install_nlopt.sh
+RUN chmod +x build/nlopt/make_install_nlopt.sh
 RUN catkin build
 
 RUN /bin/bash -c 'source /opt/ros/melodic/setup.bash'
