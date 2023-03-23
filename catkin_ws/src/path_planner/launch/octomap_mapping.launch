@@ -18,8 +18,8 @@
 		
 		<!-- <param name="ground_filter/distance" value="1"/> -->
 		<!-- <param name="ground_filter/plane_distance" value="1"/> -->
-		<param name="pointcloud_min_z " value="9"/>
-		<param name="pointcloud_max_z " value="10"/>
+		<param name="pointcloud_min_z " value="8"/>
+		<param name="pointcloud_max_z " value="11"/>
 
 		<!-- data source to integrate (PointCloud2) -->
 		<remap from="cloud_in" to="/points/filtered" />

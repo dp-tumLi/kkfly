@@ -2,18 +2,39 @@
 dynamic_params: {
   max_v: 5,
   max_a: 2.3,
+
+  # set the 4d trajectory velocity limit
   max_v_rot: 2,
+  # set the 4d trajectory acceleration limit
   max_a_rot: 2,
+  
+  # set the criteria of defining a boundary segment
   min_length: 5,
+  # set the criteria of defining how many boundary segments you most want
   max_groups: 20,
-  tol_dis: 2,
+
+  # set the reach distance tolerance
+  tol_dis: 1,
+  # motion: 1 for 4d;    2 for 3d
   motion: 1,
+
+  # the termination criteria: how if the unknown area percentage w.r.t the whole map
+  map_threshold: 0.20,
+
+  # how many waypoints you want to remove:
+  # in case we want a smoother trajectory, we recommand to remove the first several
+  # waypoints of each path, such that the first phase the tracking performance has
+  # more time and space, in order to reduce the control overshot.
+  # you can define only in 5 elements!
+  remove_num: [7, 9, 10 ,11, 13],
 }
 
 waypoints: {
 
-  directionGoals_x: [50, 100, 150,  150,  60,  0,    0,    60,    120,  150,],
-  directionGoals_y: [-5,   0,   0,  -50, -50, -50,  -120, -120,  -120, -150,],
+  # directionGoals_x: [50, 100, 150,  150,  60,  0,    0,    60,    120,  150,],
+  # directionGoals_y: [-5,   0,   0,  -50, -50, -50,  -120, -120,  -120, -150,],
+  directionGoals_x: [ 20,   50, 85, 85, 110, 135, 160, 160, 160, 160,   120,  80, 50,  30,    10,   20,   20,    5,  30,  40,    60,  90,  120, 160,160],
+  directionGoals_y: [-35,  -30, -30, -5, -5, -5, -5,  -35, -65, -90,  -80, -95, -80,  -70,   -80, -110, -150, -170,-160,-120,-130, -150,-135, -130, -170],
   const_height: 10,
   DilationRadius: 1,
 

@@ -237,15 +237,17 @@ bool BasicPlanner::CheckCovery(){
     bool Checkflag = false;
     // actualize the vertices of the map
     if (!directionGoals_inWorld_.empty()){
+        int tempcount = 0;
         for (auto &DirGoal: directionGoals_inWorld_){
-            std::cout<<"inside checkcovery for loop"<<std::endl;
+            // std::cout<<"inside checkcovery for loop"<<std::endl;
+            tempcount ++;
             if (SAFER::IsPointInMatrix(DirGoal, vertexA_, vertexB_, vertexC_, vertexD_)){
-                std::cout<<"inside checkcovery IF loop"<<std::endl;
+                // std::cout<<"inside checkcovery IF loop"<<std::endl;
                 DirGoal.inside = true;
                 if (map_matrix_[DirGoal.x_m][DirGoal.y_m] == 100 || map_matrix_[DirGoal.x_m][DirGoal.y_m] == 0){
                     // do we need the x_m y_m to be actualized insome callback function such that it is realtime
                     DirGoal.visited = true;
-                    std::cout<<"inside checkcovery 2nd IF loop"<<std::endl;
+                    std::cout<<"The "<<tempcount<<"inside checkcovery 2nd IF loop"<<std::endl;
                 }
                 Checkflag = true;
             }
@@ -257,6 +259,39 @@ bool BasicPlanner::CheckCovery(){
         return Checkflag;
     }
 }
+
+
+bool BasicPlanner::Termination(){
+    bool terminate = false;
+    double overall = 170 * 180 / (map_resolution_ * map_resolution_);
+    int target = -1;
+    size_t count = 0;
+    double threshold = 0.7;
+    size_t sum = 0;
+    if (!nh_.getParam(ros::this_node::getName() + "/dynamic_params/map_threshold", threshold)){
+    ROS_WARN("[planner] param map_threshold not found");}
+    if (map_matrix_.size()> 160){
+        for (auto row : map_matrix_){
+            count = std::count(row.begin(), row.end(), target);
+            sum += count;
+            // std::cout <<"how many -1 "<<count<<std::endl;
+        }
+        
+        std::cout<<" quotient "<< sum / overall<<std::endl;
+        if (sum/overall < threshold){
+            
+            terminate = true;
+        }
+        else{
+            terminate = false;
+        }
+
+        return terminate;
+    }
+
+}
+
+
 // find the final goal based on some given predefined direction position in World.
 std::vector<std::pair<int, int>> BasicPlanner::FindFinalGoal(const vector<vector<int>>& SafeMatrix,
                                                 int maxGroups, int minLength
@@ -580,25 +615,35 @@ bool BasicPlanner::planTrajectory4D(const std::vector<std::pair<int, int>>& wayp
 
     size_t NumberOfWayPtr = aux_wayptrs.size();
     int stepsize = 1;
+    size_t i = 1;
+    std::vector<int> remove_num;
+    if (!nh_.getParam(ros::this_node::getName() + "/dynamic_params/remove_num", remove_num)){
+        ROS_WARN("[planner] param remove_num not found");}
+        
     if (NumberOfWayPtr<=40 && NumberOfWayPtr>13){
         stepsize = NumberOfWayPtr/10;
+        i = remove_num[0];
     }
     else if(NumberOfWayPtr>40 && NumberOfWayPtr<=80){
         stepsize = NumberOfWayPtr/20;
+        i = remove_num[1];
     }
     else if(NumberOfWayPtr>80 && NumberOfWayPtr<=140){
         stepsize = NumberOfWayPtr/30;
-
-    }else if(NumberOfWayPtr>140 && NumberOfWayPtr<=200){
+        i = remove_num[2];
+    }
+    else if(NumberOfWayPtr>140 && NumberOfWayPtr<=200){
         stepsize = NumberOfWayPtr/40;
+        i = remove_num[3];
     }
     else if(NumberOfWayPtr > 200){
         stepsize = 6;
+        i = remove_num[4];
     }
 
     Eigen::Vector4d aux_pose;
     Eigen::VectorXd vel_transl(3);
-    for (size_t i = 2; i < des_waypoints[0].size()-1; i += stepsize){
+    for (i; i < des_waypoints[0].size()-1; i += stepsize){
         double yaw = std::atan2(des_waypoints[1][i]-des_waypoints[1][i-1], des_waypoints[0][i]-des_waypoints[0][i-1]);
         
         std::cout<<double(yaw/M_PI*180)<<std::endl;;

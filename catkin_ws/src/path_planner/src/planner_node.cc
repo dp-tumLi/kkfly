@@ -44,14 +44,23 @@ int main(int argc, char** argv) {
     planner.planTrajectoryRotation(goal_pos_vel_initial.first, goal_pos_vel_initial.second, 
                                         &trajectory);
     planner.publishTrajectory(trajectory);
+
+    bool rotate = true; 
+
     ros::Time start_time_init = ros::Time::now();
-    if ((ros::Time::now() - start_time_init).toSec() < 26){
+    ros::Duration wait_duration(25.0);
+    while ((ros::Time::now() - start_time_init) < wait_duration){
         ros::spinOnce();
         loop_rate.sleep();
     }
-    auto aux_ptrs = planner.MapWayPtrToRealWorld();
-    planner.planTrajectory4D(aux_ptrs, &trajectory);
-    planner.publishTrajectory(trajectory);
+
+    rotate = false; 
+    if (!rotate){
+
+        auto aux_ptrs = planner.MapWayPtrToRealWorld();
+        planner.planTrajectory4D(aux_ptrs, &trajectory);
+        planner.publishTrajectory(trajectory);
+    }
 
     // planner.planTrajectory(&trajectory);
     // planner.publishTrajectory(trajectory);
@@ -64,14 +73,14 @@ int main(int argc, char** argv) {
     
     bool executing_rotation_traj = false; // flag variable to keep track of whether the UAV is executing the rotation trajectory or not
 
-    while (ros::ok()) {
+    while (!planner.Termination()) {
         if (planner.ReachedGoal(tol_dis) 
         || !planner.CheckIfPathCollision()
         ){
             if(executing_rotation_traj)
 
             std::cout<<"new traj"<<std::endl;
-            std::pair<Eigen::VectorXd, Eigen::VectorXd> goal_pos_vel = planner.RotCommand();
+            std::pair<Eigen::VectorXd, Eigen::VectorXd> goal_pos_vel = planner.RotCommandForNext();
 
             planner.planTrajectoryRotation(goal_pos_vel.first, goal_pos_vel.second, 
                                                 &trajectory);
@@ -84,13 +93,13 @@ int main(int argc, char** argv) {
 
             ros::Time start_time = ros::Time::now(); // record the start time of the rotation trajectory
 
-            while (ros::ok() && (ros::Time::now() - start_time).toSec() < 20) { // wait for 10 seconds
+            while (ros::ok() && (ros::Time::now() - start_time) < wait_duration) { // wait for 10 seconds
                 ros::spinOnce();  // process a few messages in the background - causes the uavPoseCallback to happen
                 loop_rate.sleep();  // sleep to maintain the desired frequency
-                if(!planner.CheckIfPathCollision()){
-                    std::cout<<"Current path was check to be collidated!"<<std::endl;
-                    break;
-                }
+                // if(!planner.CheckIfPathCollision()){
+                //     std::cout<<"Current path was check to be collidated!"<<std::endl;
+                //     break;
+                // }
             }
             
             executing_rotation_traj = false; // set the flag to false
@@ -123,7 +132,15 @@ int main(int argc, char** argv) {
         loop_rate.sleep();  // sleep to maintain the desired frequency
     }
 
-
+    while (planner.Termination()){
+        std::cout << "Map Exploration task finished! Termination!"<<std::endl;
+        ros::Time start_time = ros::Time::now();
+        if ((ros::Time::now() - start_time).toSec() < 9999)
+        {
+            ros::spinOnce();  // process messages in the background - causes the uavPoseCallback to happen
+            loop_rate.sleep();  // sleep to maintain the desired frequency
+        }
+    }
 
     return 0;
 }

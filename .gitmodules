@@ -28,6 +28,3 @@
 [submodule "catkin_ws/src/octomap_mapping"]
 	path = catkin_ws/src/octomap_mapping
 	url = https://github.com/OctoMap/octomap_mapping.git
-[submodule "catkin_ws/src/perception_pcl"]
-	path = catkin_ws/src/perception_pcl
-	url = git@github.com:ros-perception/perception_pcl.git

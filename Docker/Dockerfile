@@ -23,6 +23,9 @@ RUN apt-get update && apt-get install -y \
 	libtool \
         python-is-python3 \
         python3-pyqt5
+
+
+#RUN apt-get install -y ros-noetic-octomap-rviz-plugins
 	#autoconf \
 	#automake \
 	#ros-melodic-rotors-simulator
@@ -32,21 +35,6 @@ RUN apt-get update && apt-get install -y ssh\
         nano  \
         git \
         openssh-server
-
-# # authorize SSH Host
-# RUN mkdir -p /etc/ssh && \
-#     chmod 0700 /etc/ssh/ && \
-#     ssh-keyscan github.com >> /etc/ssh/known_hosts && \
-#     chmod 644 /home/li/.ssh/id_rsa && \
-#     chmod 644 /home/li/.ssh/id_rsa.pub
-
-# # add the keys and set permissions
-
-# ADD /home/li/.ssh/id_rsa /root/.ssh/
-# ADD /home/li/.ssh/id_rsa.pub /root/.ssh/
-
-# RUN chmod 400 /root/.ssh/id_rsa && \
-#     chmod 644 /root/.ssh/id_rsa.pub
 
 # authorize SSH Host
 RUN mkdir -p /root/.ssh && \
@@ -60,10 +48,10 @@ RUN echo "$ssh_prv_key" > /root/.ssh/id_rsa && \
 
 # clone the git repository using SSH connection
 WORKDIR /home
-RUN git clone git@github.com:dp-tumLi/kkfly.git
+RUN git clone git@github.com:TUM-AAS/autsys-projects-kkfly.git
 
 # fetch data from submodules
-WORKDIR /home/kkfly/
+WORKDIR /home/autsys-projects-kkfly/
 
 RUN git submodule init
 RUN git submodule update
@@ -72,10 +60,8 @@ RUN git submodule update
 RUN rm -rf /root/.ssh/
 
 # set working directory to project
-WORKDIR /home/kkfly/catkin_ws/
-RUN pip install --no-cache-dir -r anforderung.txt
+WORKDIR /home/autsys-projects-kkfly/catkin_ws/
 RUN catkin config --extend /opt/ros/noetic
-#RUN chmod +x build/nlopt/make_install_nlopt.sh
 RUN catkin build
 
 RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash'

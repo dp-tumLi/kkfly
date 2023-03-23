@@ -112,6 +112,7 @@ public:
                                     
     bool MotionMode();
     int ReturnDisTolerance();
+    bool Termination();
 
 private:
     ros::Publisher pub_markers_;

@@ -1,9 +1,9 @@
 
 params: {
-    kx : 5.5,
-    kv : 3.5,
-    kroll: 8.2,
-    kpitch: 8.2,
-    kz : 3.6,
+    kx : 3.0,
+    kv : 3.0,
+    kroll: 5.0,
+    kpitch: 5.0,
+    kz : 3.0,
     komega : 1,
 }

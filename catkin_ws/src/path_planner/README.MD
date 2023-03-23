@@ -1,6 +1,18 @@
 ## Path Planner instructions
+- It is always important to notice, that the path_planner should only be launched after you have launched the node from octomap.
+   To simplify the launch work, we recommand you to first read the readme files both at homepage `autsys-projects-kkfly` and workspace `autsys-projects-kkfly/catkin_ws/`. And   `cd your/path/to/catkin_ws`  The ways to launch octomap:
+   In one terminal:
+   ```
+   source devel_isolated/setup.bash
+   roslaunch path_planner octomap_mapping.launch
+   ```
+   In another terminal, sufficient but not neccessary, this is for visualization:
+   ```
+   source devel_isolated/setup.bash
+   roslaunch path_planner octomap_mapping3d.launch
+   ```
+   
 - in a new terminal:  
-  `cd your/path/to/catkin_ws`  
   `source devel_isolated/setup.bash`  
   `roslaunch path_planner waypoint_mission.launch`  
 - any issue please contact [email:](yu.li@tum.de) yu.li@tum.de
@@ -39,3 +51,5 @@
         planner, also it checks if the current direction goal is visited.
     - different types of trajectory optimizer incl. 4D and 3D i.e. with/without orientation contraints.
     - publisher of waypoints and trajectory are differently in `rviz` visualizable.
+## Parameter of your choice
+- we provide also die possibility for some prefered parameter tuning, you can find in `path_planner/config/trajectory_config.yaml`. 

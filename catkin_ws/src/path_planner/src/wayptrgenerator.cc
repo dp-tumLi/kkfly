@@ -30,7 +30,7 @@ std::vector<std::pair<int, int>> Dijkstra::DijkstraPlanner(const std::pair<int, 
 }
 
 
-
+// of course the Dijkstra is not the shortest approach.
 std::vector<std::pair<int, int>> Dijkstra::findShortestPath(int startX, int startY, int goalX, int goalY) {
     // Initialize the distances and the previous node for each cell
     std::vector<std::vector<int>> distances(m_, std::vector<int>(n_, INT_MAX));
@@ -60,7 +60,7 @@ std::vector<std::pair<int, int>> Dijkstra::findShortestPath(int startX, int star
 
           // Check if the neighbor is within the map and not an obstacle
           if (nx >= 0 && nx < m_ && ny >= 0 && ny < n_ && map_[nx][ny] != 100
-           && map_[nx][ny] != -1
+        //    && map_[nx][ny] != -1
            ) {
             int newDistance = distances[x][y] + 1;
             if (newDistance < distances[nx][ny]) {

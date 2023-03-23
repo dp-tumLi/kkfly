@@ -113,7 +113,7 @@ class controllerNode{
   }
 
 public:
-  controllerNode():e3(0,0,1),F2W(4,4),hz(1000.0),xd(0,-5,10){
+  controllerNode():e3(0,0,1),F2W(4,4),hz(1000.0),xd(10,-35,10){
 
       // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       //  PART 2 |  Initialize ROS callback handlers
